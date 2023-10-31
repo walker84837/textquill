@@ -40,24 +40,20 @@ An OCR (Optical Character Recognition) tool that extracts text from images using
 
 Contributions to this project are always welcome. If you'd like to contribute, please follow these steps:
 
-1. Clone the repository:
+1. Fork this repository
+
+2. Clone the git repository:
 
     ```bash
-    git clone https://github.com/walker84837/cpp-ocr-tool.git
-    ```
-
-2. Create a new branch for your changes:
-
-    ```bash
-    git switch -c new-feature 
+    git clone https://github.com/yourusername/cpp-ocr-tool.git
     ```
 
 3. Make your changes and test them thoroughly.
 
-4. Commit your changes:
+4. Add and commit your changes:
 
     ```bash
-    git commit -m "Add a description of your changes"
+    git add . && git commit -m "Add a description of your changes"
     ```
 
 5. Push your changes to your branch:
@@ -66,8 +62,9 @@ Contributions to this project are always welcome. If you'd like to contribute, p
     git push origin new-feature
     ```
 
-6. Open a pull request on the repository. Describe your changes and the problem they solve.
+6. Open a pull request on the forked repository. Describe your changes and the problem they solve.
 
 ## License
 
 This project is licensed under the GNU General Public License v3.0. You can find the full license text in the [LICENSE](LICENSE.md) file. You can get a full copy of the license [here](https://www.gnu.org/licenses/gpl-3.0.html).
+

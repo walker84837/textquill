@@ -1,8 +1,9 @@
+# g++ main.cpp -I./include/opencv4 -I./include/tesseract 
 CXX = g++
-CXXFLAGS = -O3 -std=c++17 -Wall -Wextra -pedantic -I/usr/include/opencv4
-LIBS = -ltesseract -lopencv_core -lopencv_imgproc -lopencv_highgui -lopencv_imgcodecs -lopencv_photo
-SRCS = main.cpp
-EXEC = cpp-ocr-tool.app
+CXXFLAGS = -Ofast -Wall -Wextra -pedantic -I./include/opencv4 -I ./include/tesseract
+LIBS = -ltesseract -lopencv_core -lopencv_imgcodecs -lopencv_imgproc
+SRCS = src/main.cpp
+EXEC = bin/cpp-ocr-tool.app
 
 .PHONY: all clean
 
@@ -12,4 +13,4 @@ $(EXEC): $(SRCS)
 	$(CXX) $(CXXFLAGS) $< -o $@ $(LIBS)
 
 clean:
-	rm -f $(EXEC)
+	rm -f src/$(EXEC)

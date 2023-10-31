@@ -31,7 +31,9 @@
 *.out
 *.app
 
-.vscode/
 *.png
 *.jpg
 *.gif
+
+bin/*
+.vscode/
