@@ -1,70 +1,37 @@
-# cpp-ocr-tool
+# textquill: a simple ocr tool
 
-An OCR (Optical Character Recognition) tool that extracts text from images using Tesseract and OpenCV. This program can extract text content from images, supports various image formats (JPEG, PNG, etc.), utilizes Tesseract for accurate text recognition, and applies additional configuration options in a JSON file for improved customisation.
+An OCR tool that extracts text from images using [`tesseract`](https://crates.io/crates/tesseract), written in Rust.
 
-## How to Use
+## Table of contents
 
-- If you wish, you can download the pre-compiled binaries, and its SHA256 checksum if you'd like to check the binary's checksum. Or else, if you feel like compiling the program, you can clone the repository:
+  - [Usage](#usage)
+  - [Installation](#installation)
+  - [License](#license)
 
-    ```bash
-    git clone https://github.com/walker84837/cpp-ocr-tool.git
-    ```
+## Usage
 
-- If you wish to, you can download the `config.json` from the cloned GitHub repository, or if you wish to make your own, there is only one thing to write to a `config.json` file:
+  - `image_path`: The path of the image to get the text from.
 
-    ```json
-    {
-        "language": "xxx"
-    }
-    ```
+  - `output_format`: The output format of the recognized text. The possible values are:
+    - `text`
+    - `hocr`
+    - `tsv`
 
-    `xxx` is a country code that's supported by Tesseract, and make sure you have its package from your package manager or anything.
-    **Please move the `config.json` in the same folder as the executable, or it won't work!**
+  - `page_number`: The number of the page to get the text from. Required only if output_format is `hocr` or `tsv`.
 
-- Then, do the `make` command to build the binary.
+  - `config`: The path of the config file. Default is at "config.toml".
 
-- Drag your image, and put it in the same folder as the executable file.
-  - Make sure the image is valid and readable with any image viewer/editor, or the program won't work.
+## Installation
 
-- Pass the image and output file to the program:
+To build this program, you need Rust and its package manager, Cargo. To install Rust, you can follow the guide [here](https://doc.rust-lang.org/book/ch01-01-installation.html). With that out of the way, you can build it from source by using:
 
-    ```bash
-    ./executable.app image.ext output.ext
-    ```
+``` console
+cargo build --release
+```
 
-    `ext` can be an extension of your liking, especially for the output file.
-
-- You're done! It will take some seconds, depending on how big the image is, or how much it's converting to UTF-8 text.
-
-## Contributing
-
-Contributions to this project are always welcome. If you'd like to contribute, please follow these steps:
-
-1. Fork this repository
-
-2. Clone the git repository:
-
-    ```bash
-    git clone https://github.com/yourusername/cpp-ocr-tool.git
-    ```
-
-3. Make your changes and test them thoroughly.
-
-4. Add and commit your changes:
-
-    ```bash
-    git add . && git commit -m "Add a description of your changes"
-    ```
-
-5. Push your changes to your branch:
-
-    ```bash
-    git push origin new-feature
-    ```
-
-6. Open a pull request on the forked repository. Describe your changes and the problem they solve.
+> [!WARNING]
+> This software is expected to not compile as of now.
 
 ## License
 
 This project is licensed under the GNU General Public License v3.0. You can find the full license text in the [LICENSE](LICENSE.md) file. You can get a full copy of the license [here](https://www.gnu.org/licenses/gpl-3.0.html).
-

@@ -13,28 +13,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
   - Added directory structures (`bin/`, `src/`, `include/`)
 
-### Fixed
-
-  - None.
-
-### Removed
-
-  - None.
-
 ## \[0.0.1\] - 2023-08-13
 
 ### Added
 
   - Initial release of `cpp-ocr-tool`.
-
-### Fixed
-
-  - None.
-
-### Changed
-
-  - None.
-
-### Removed
-
-  - None.
