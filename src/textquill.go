@@ -2,89 +2,132 @@ package main
 
 import (
 	"flag"
-	"fmt"
+	"log"
 	"os"
+	"path/filepath"
 	"strings"
 
 	"github.com/otiai10/gosseract/v2"
 	"github.com/pelletier/go-toml"
 )
 
+const (
+	defaultConfigPath   = "config.toml"
+	defaultOutputFormat = "text"
+	defaultLang         = "eng"
+	defaultPSM          = 3
+)
+
 // Command-line arguments.
 type Args struct {
-	ImagePath    string
-	OutputFormat string
-	ConfigPath   string
-	OutputPath   string
+	ImagePaths  []string
+	Format      string
+	ConfigPath  string
+	OutputDir   string
+	Language    string
+	PageSegMode int
 }
 
 func main() {
 	var args Args
 
-	flag.StringVar(&args.ImagePath, "image", "", "The image to scan")
-	flag.StringVar(&args.OutputFormat, "format", "", "The output format of the recognized text. Possible formats: 'hocr', 'text'")
-	flag.StringVar(&args.ConfigPath, "config", "config.toml", "The path of the TOML config file")
-	flag.StringVar(&args.OutputPath, "output", "image.txt", "The path of the output file")
+	flag.StringVar(&args.ConfigPath, "config", defaultConfigPath, "The path of the TOML config file")
+	flag.StringVar(&args.Format, "format", defaultOutputFormat, "The output format of the recognized text. Possible formats: 'hocr', 'text'")
+	flag.StringVar(&args.OutputDir, "output-dir", ".", "The directory to save the output files")
+	flag.StringVar(&args.Language, "lang", "", "OCR language")
+	flag.IntVar(&args.PageSegMode, "psm", defaultPSM, "Page segmentation mode (0-13)")
+
+	flag.Func("images", "Comma-separated list of image paths to process", func(flagValue string) error {
+		args.ImagePaths = strings.Split(flagValue, ",")
+		return nil
+	})
 
 	flag.Parse()
 
 	if flag.NFlag() == 0 {
-		fmt.Println("Usage: textquill [image path] [text format] [config path] [output file]")
-		fmt.Println("Options:")
-		flag.PrintDefaults()
+		flag.Usage()
 		return
 	}
 
-	configData, err := os.ReadFile(args.ConfigPath)
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error opening config file for reading: %v\n", err)
-		return
-	}
+	log.SetFlags(log.Ldate | log.Ltime | log.Lshortfile)
+	config := loadConfig(args.ConfigPath)
 
-	config, err := toml.Load(string(configData))
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error parsing config file: %v\n", err)
-		return
+	if args.Language == "" {
+		args.Language = config.GetDefault("textquill.language", defaultLang).(string)
 	}
-
-	language := config.Get("textquill.language").(string)
+	if args.PageSegMode == defaultPSM {
+		args.PageSegMode = int(config.GetDefault("textquill.pagesegmode", defaultPSM).(int64))
+	}
 
 	client := gosseract.NewClient()
 	defer client.Close()
+	client.SetLanguage(args.Language)
+	client.SetPageSegMode(gosseract.PageSegMode(args.PageSegMode))
 
-	client.SetLanguage(language)
-	client.SetPageSegMode(gosseract.PageSegMode(1))
+	for _, imagePath := range args.ImagePaths {
+		processImage(client, imagePath, args.Format, args.OutputDir)
+	}
+}
 
-	imageData, err := os.ReadFile(args.ImagePath)
+// loadConfig loads and validates the TOML configuration file.
+func loadConfig(configPath string) *toml.Tree {
+	configContents, err := os.ReadFile(configPath)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error reading image file: %v\n", err)
+		log.Fatalf("Error opening config file for reading: %v", err)
+	}
+
+	config, err := toml.Load(string(configContents))
+	if err != nil {
+		log.Fatalf("Error parsing config file as TOML: %v", err)
+	}
+
+	return config
+}
+
+// processImage performs OCR on the specified image and saves the result to a file.
+func processImage(client *gosseract.Client, imagePath, format, outputDir string) {
+	imageData, err := os.ReadFile(imagePath)
+	if err != nil {
+		log.Printf("Error reading image file %s: %v", imagePath, err)
 		return
 	}
 
 	client.SetImageFromBytes(imageData)
-
 	var recognizedText string
 
-	switch strings.ToLower(args.OutputFormat) {
+	switch strings.ToLower(format) {
 	case "text":
-		recognizedText, _ = client.Text()
+		recognizedText, err = client.Text()
 	case "hocr":
-		recognizedText, _ = client.HOCRText()
+		recognizedText, err = client.HOCRText()
 	default:
-		fmt.Fprintf(os.Stderr, "Invalid format. Possible values: 'text', 'hocr'\n")
+		log.Printf("Invalid format %s for image %s. Possible values: 'text', 'hocr'", format, imagePath)
 		return
 	}
 
-	err = os.WriteFile(args.OutputPath, append([]byte(recognizedText), '\n'), 0644)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error writing to output file: %v\n", err)
+		log.Printf("Error recognizing text from image %s: %v", imagePath, err)
 		return
 	}
 
-	err = client.Close()	
+	outputFile := generateOutputFileName(imagePath, format, outputDir)
+	err = os.WriteFile(outputFile, []byte(recognizedText), 0644)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error closing Tesseract API: %v\n", err)
+		log.Printf("Error writing text to file '%s': %v", outputFile, err)
 		return
 	}
-	fmt.Printf("Text in image successfully written to '%s'.\n", args.OutputPath)
+
+	log.Printf("Recognized text from image %s has been successfully written to file '%s'.", imagePath, outputFile)
+}
+
+// generateOutputFileName generates the output file name based on the original image path and desired format.
+func generateOutputFileName(imagePath, format, outputDir string) string {
+	baseName := filepath.Base(imagePath)
+	ext := filepath.Ext(baseName)
+	newExt := ".txt"
+	if strings.ToLower(format) == "hocr" {
+		newExt = ".hocr"
+	}
+	newName := strings.TrimSuffix(baseName, ext) + newExt
+	return filepath.Join(outputDir, newName)
 }
