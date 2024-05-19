@@ -25,6 +25,7 @@ An OCR tool that extracts text from images using
     `eng`.
   - `psm`: Page segmentation mode (0-13). Default is 3.
 
+
 To build this program, you need Go and its toolchain. You can install Go
 [here](https://go.dev/dl/). With that out of the way, you can build it from
 source by using:

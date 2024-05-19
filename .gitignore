@@ -1,44 +1,32 @@
-# Prerequisites
-*.d
-
-# Compiled Object files
-*.slo
-*.lo
-*.o
-*.obj
-
-# Precompiled Headers
-*.gch
-*.pch
-
-# Compiled Dynamic libraries
+# If you prefer the allow list template instead of the deny list, see community template:
+# https://github.com/github/gitignore/blob/main/community/Golang/Go.AllowList.gitignore
+#
+# Binaries for programs and plugins
+*.exe
+*.exe~
+*.dll
 *.so
 *.dylib
-*.dll
 
-# Fortran module files
-*.mod
-*.smod
+# Test binary, built with `go test -c`
+*.test
 
-# Compiled Static libraries
-*.lai
-*.la
-*.a
-*.lib
-
-# Executables
-*.exe
+# Output of the go coverage tool, specifically when used with LiteIDE
 *.out
-*.app
 
-*.png
-*.jpg
-*.gif
+# Dependency directories (remove the comment below to include it)
+# vendor/
 
-bin/*
-.vscode/
+# Go workspace file
+go.work
 
+# Images files
+**/*.png
+**/*.jpg
+**/*.jpeg
+**/*.webp
+**/*.txt
 
-# Added by cargo
-
-/target
+# Configuration files and binary
+**/*.toml
+textquill

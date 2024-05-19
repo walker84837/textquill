@@ -1,10 +1,13 @@
 # Configuration
 
-This document provides guidelines for creating a configuration file for the TextQuill. The configuration file is in TOML format and is used to specify various settings required for the Tesseract, the OCR engine.
+This document provides guidelines for creating a configuration file for
+TextQuill. The configuration file is in TOML format and is used to specify
+various settings required for the Tesseract, the OCR engine.
 
 ## Configuration structure
 
-The configuration has all of its variables (as of now) in the `textquill` section. Here are all possible variables and their possible value(s):
+The configuration has all of its variables in the `textquill` section. Here are
+all possible variables and their possible value(s):
 
 |Variable|Possible value(s)|Description|
 |---|---|---|
@@ -18,3 +21,8 @@ Here's an example configuration file:
 language = "eng"
 psm = 3
 ```
+
+-----
+
+The documentation is licensed under the [GNU Free Documentation License 
+v1.3](LICENSE.md). You can get a full copy at <https://www.gnu.org/licenses/fdl-1.3.html>.
