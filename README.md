@@ -1,7 +1,7 @@
 # textquill: a simple ocr tool
 
-> [!WARNING] This software is under heavy developent. Things are likely to
-> break.
+> [!WARNING]
+> This software is under heavy developent. Things are likely to break.
 
 An OCR tool that extracts text from images using
 [`gosseract`](https://github.com/otiai10/gosseract).
