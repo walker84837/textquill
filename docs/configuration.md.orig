@@ -9,12 +9,10 @@ The configuration has all of its variables (as of now) in the `textquill` sectio
 |Variable|Possible value(s)|Description|
 |---|---|---|
 |`language`|any language in ISO 639-3|The language Tesseract will use to detect text.|
-|`psm`|0-13|The page segmentation mode option.|
 
 Here's an example configuration file:
 
 ```toml
 [textquill]
 language = "eng"
-psm = 3
 ```

@@ -1,8 +1,12 @@
 # textquill: a simple ocr tool
 
-An OCR tool that extracts text from images using [`tesseract`](https://crates.io/crates/tesseract), written in Rust.
+> [!WARNING] This software is under heavy developent. Things are likely to
+> break.
 
-## Table of contents
+An OCR tool that extracts text from images using
+[`gosseract`](https://github.com/otiai10/gosseract).
+
+## Table of Contents
 
   - [Usage](#usage)
   - [Installation](#installation)
@@ -10,28 +14,33 @@ An OCR tool that extracts text from images using [`tesseract`](https://crates.io
 
 ## Usage
 
-  - `image_path`: The path of the image to get the text from.
-
-  - `output_format`: The output format of the recognized text. The possible values are:
-    - `text`
-    - `hocr`
-    - `tsv`
-
-  - `page_number`: The number of the page to get the text from. Required only if output_format is `hocr` or `tsv`.
-
+  - `images`: The comma-separated paths of the images to scan.
+  - `format`: The output format of the recognized text. The possible values are:
+      - `text` (default)
+      - `hocr`
   - `config`: The path of the config file. Default is at "config.toml".
+  - `output-dir`: The directory to save the output file(s). Default is in
+    current working directory.
+  - `lang`: The language that Tesseract will use to scan the image. Default is
+    `eng`.
+  - `psm`: Page segmentation mode (0-13). Default is 3.
 
-## Installation
-
-To build this program, you need Rust and its package manager, Cargo. To install Rust, you can follow the guide [here](https://doc.rust-lang.org/book/ch01-01-installation.html). With that out of the way, you can build it from source by using:
+To build this program, you need Go and its toolchain. You can install Go
+[here](https://go.dev/dl/). With that out of the way, you can build it from
+source by using:
 
 ``` console
-cargo build --release
+go build -ldflags="-s -w" -o textquill ./src/textquill.go
 ```
 
-> [!WARNING]
-> This software is expected to not compile as of now.
+## Roadmap
+
+  - [X] Support for providing multiple files
+  - [ ] Exporting files in mutliple other formats, as right now, only text and
+    HOCR are supported
 
 ## License
 
-This project is licensed under the GNU General Public License v3.0. You can find the full license text in the [LICENSE](LICENSE.md) file. You can get a full copy of the license [here](https://www.gnu.org/licenses/gpl-3.0.html).
+This project is licensed under the [GNU General Public License
+v3.0](LICENSE.md). You can get a full copy of the license
+[here](https://www.gnu.org/licenses/gpl-3.0.html).
