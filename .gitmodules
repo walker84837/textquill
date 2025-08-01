@@ -1,0 +1,6 @@
+[submodule "subprojects/cxxopts"]
+	path = subprojects/cxxopts
+	url = https://github.com/jarro2783/cxxopts.git
+[submodule "subprojects/cpptoml"]
+	path = subprojects/cpptoml
+	url = https://github.com/skystrife/cpptoml.git
