@@ -4,3 +4,9 @@
 [submodule "subprojects/cpptoml"]
 	path = subprojects/cpptoml
 	url = https://github.com/skystrife/cpptoml.git
+[submodule "subprojects/leptonica"]
+	path = subprojects/leptonica
+	url = https://github.com/DanBloomberg/leptonica
+[submodule "subprojects/tesseract"]
+	path = subprojects/tesseract
+	url = https://github.com/tesseract-ocr/tesseract
